@@ -1,0 +1,98 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+# Node.js dependencies
+/node_modules/
+**/node_modules/
+
+# TypeScript output
+dist/
+build/
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment Variables
+.env
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+/coverage/
+.nyc_output/
+jest/
+*.snap
+
+# React and Next.js specific
+/.next/
+/out/
+/public/static/
+
+# Parcel-bundler cache (if using)
+/.cache
+
+# Mac/Linux
+*.pyc
+*.pyo
+__pycache__/
+
+# AI/ML specific (optional)
+/model_data/
+*.h5
+*.pt
+*.onnx
+*.ckpt
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build tools
+/.eslintcache
+/.parcel-cache
+
+# Optional backup files
+*.bak
+*.backup
+
+# Project-specific generated files
+config-overrides.js

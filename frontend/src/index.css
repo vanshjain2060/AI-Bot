@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto+Slab:wght@100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+/* For the installation for the material ui and the other things used such as notification routing and icons use this command
+npm install @mui/material @emotion/react @emotion/styled react-icons react-router-dom react-hot-toast */ 
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background:  #05101c;
+  color: white;
+  font-family: 'Roboto Slab', serif;
+}
+
+.image-inverted {
+  filter: invert(100%);
+}
+
