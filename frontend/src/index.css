@@ -22,3 +22,7 @@ text-decoration: none;
 border-radius: 10px;
 letter-spacing: 1px;
 }
+.MuiOutlinedInput-notchedOutline ,
+.MuiOutlinedInput-input-root.Mui-focused {
+  border-color: white !important;
+}

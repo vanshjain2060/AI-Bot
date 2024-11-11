@@ -13,7 +13,7 @@ const AuthContext = createContext<UserAuth | null>(null);
 // this is a simple auth provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
-    const [isLoggedIn, setIsloggedIn] = useState(true);
+    const [isLoggedIn, setIsloggedIn] = useState(false);
 
     useEffect(() => {
         // fetch is the user's cookies are vaild then skip login
