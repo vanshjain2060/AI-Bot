@@ -13,4 +13,12 @@ html, body {
 .image-inverted {
   filter: invert(100%);
 }
-
+.navLink {
+font-weight: 600;
+text-transform: uppercase;
+margin: 0 10px;
+padding: 8px 20px;
+text-decoration: none;
+border-radius: 10px;
+letter-spacing: 1px;
+}

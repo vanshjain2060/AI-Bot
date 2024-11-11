@@ -5,7 +5,11 @@ import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import NotFound from "./pages/NotFound"
 import Chat from "./pages/Chat"
+
+import { UserAuth } from "./contex/AuthContext"
+
 function App() {
+  console.log(UserAuth()?.isLoggedIn);
   return (
     <main>
       <Header />
