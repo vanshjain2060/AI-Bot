@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { COOKIE_NAME } from "./cookies-manager.js";
+import { log } from "console";
 export const createToken = (id: string, email: string, expiresIn: string) => {
     const payload = { id, email };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn }); 
@@ -22,6 +23,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         } else {
             console.log("token verification successful");
             resolve();
+            console.log(success , "success");
             res.locals.jwtData = success;
             return next();
         }

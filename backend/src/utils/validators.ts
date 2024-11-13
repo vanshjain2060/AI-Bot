@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { z, ZodSchema } from "zod";
 
 // Reusable validator function
-const validate = (schema: ZodSchema) => {
+export const validator = (schema: ZodSchema) => {
     console.log("inside the validator function");
     
     return (req: Request, res: Response, next: NextFunction) => {
@@ -17,4 +17,4 @@ const validate = (schema: ZodSchema) => {
     };
 };
 
-export default validate;
+
