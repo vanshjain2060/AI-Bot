@@ -3,33 +3,53 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { red } from '@mui/material/colors';
 import { UserAuth } from '../contex/AuthContext'; // Ensure correct spelling of 'context'
 import ChatMessage from '../components/shared/ChatMessage';
-import { useState } from 'react';
+import { sendChatRequest, fetchChatHistory } from '../helpers/api-communication';
+import { useEffect, useState } from 'react';
+
+type Message = { role: string; content: string; timestamp: string };
 const Chat = () => {
   const auth = UserAuth();
   const userAvatar = `${auth?.user?.name[0]}${auth?.user?.name.split(' ')[1]?.[0] || ''}`;
 
-  const staticChats = [
-    { role: 'user', content: 'Hello, how are you?', timestamp: '2024-11-09T10:00:00Z' },
-    { role: 'bot', content: "I'm just a bot, but I'm doing great! How can I help you today?", timestamp: '2024-11-09T10:01:00Z' },
-    { role: 'user', content: 'Can you tell me a joke?', timestamp: '2024-11-09T10:02:00Z' },
-    { role: 'bot', content: 'Why did the scarecrow win an award? Because he was outstanding in his field!', timestamp: '2024-11-09T10:03:00Z' },
-    { role: 'user', content: 'Hello, how are you?', timestamp: '2024-11-09T10:00:00Z' },
-    { role: 'bot', content: "I'm just a bot, but I'm doing great! How can I help you today?", timestamp: '2024-11-09T10:01:00Z' },
-    { role: 'user', content: 'Can you tell me a joke?', timestamp: '2024-11-09T10:02:00Z' },
-    { role: 'bot', content: 'Why did the scarecrow win an award? Because he was outstanding in his field!', timestamp: '2024-11-09T10:03:00Z' },
-    { role: 'user', content: 'Hello, how are you?', timestamp: '2024-11-09T10:00:00Z' },
-    { role: 'bot', content: "I'm just a bot, but I'm doing great! How can I help you today?", timestamp: '2024-11-09T10:01:00Z' },
-    { role: 'user', content: 'Can you tell me a joke?', timestamp: '2024-11-09T10:02:00Z' },
-    { role: 'bot', content: 'Why did the scarecrow win an award? Because he was outstanding in his field!', timestamp: '2024-11-09T10:03:00Z' },
-  ];
+  // Fetch previous chat history on component mount
+  useEffect(() => {
+    const getChatHistory = async () => {
+      try {
+        const previousChats = await fetchChatHistory(); // Assume this fetches chats from the backend
+        setChatMessage(previousChats);
+      } catch (error) {
+        console.error('Failed to fetch chat history:', error);
+      }
+    };
+
+    getChatHistory();
+  }, []);
 
   const [message, setMessage] = useState('');
+  const [chatMessage, setChatMessage] = useState<Message[]>([]);
+  const handleButtonClick = async () => {
+    const userMessage: Message = {
+      role: 'user',
+      content: message,
+      timestamp: new Date().toISOString(),
+    };
 
-  const handleButtonClick = () => {
-    const ChatMessage = message;
+    // Optimistically show user's message
+    setChatMessage((prev) => [...prev, userMessage]);
     setMessage('');
-    console.log(message); // Logs the message from the input field
+
+    try {
+      const chatData = await sendChatRequest(userMessage.content);
+      const botResponse = chatData.chats; // Only append bot response
+
+      setChatMessage([...botResponse]);
+    } catch (error) {
+      console.error('Failed to fetch bot response:', error);
+    }
   };
+
+
+
 
   return (
     <Box
@@ -130,7 +150,8 @@ const Chat = () => {
             bgcolor: 'rgb(30, 30, 30)',
           }}
         >
-          {staticChats.map((data, index) => (
+          {chatMessage.map((data, index) => (
+// @ts-ignore
             <ChatMessage key={index} role={data.role} content={data.content} userAvatar={userAvatar} />
           ))}
         </Box>

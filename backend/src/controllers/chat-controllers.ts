@@ -18,6 +18,7 @@ export const generateChatCompletion = async (req: Request, res: Response, next: 
             .map(chat => `${chat.role}: ${chat.content}`)
             .join('\n');
         const fullPrompt = `${chatContext}\nuser: ${message}\nassistant:`;
+console.log(fullPrompt);
 
         // Initialize Google Generative AI client
         const genAI = new GoogleGenerativeAI(process.env.OPEN_AI_SECRET);
@@ -26,7 +27,7 @@ export const generateChatCompletion = async (req: Request, res: Response, next: 
         // Generate response using the chat history and current message
         const result = await model.generateContent(fullPrompt);
         const botReply = result.response.text();
-
+console.log(botReply);
         // Update user's chat history
         user.chats.push({ role: "user", content: message });
         user.chats.push({ role: "bot", content: botReply });
@@ -37,5 +38,20 @@ export const generateChatCompletion = async (req: Request, res: Response, next: 
     } catch (error) {
         console.error("Error generating chat completion:", error);
         return res.status(500).json({ error: "Failed to generate response" });
+    }
+};
+
+
+export const getChatHistory = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById(res.locals.jwtData.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ chats: user.chats }); // Send previous chats
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        res.status(500).json({ error: 'Failed to fetch chat history' });
     }
 };
