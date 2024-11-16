@@ -23,7 +23,8 @@ export const checkAuthStatus = async () => {
     return data;
 }
 
-export const sendChatRequest = async (message:string) => {
+export const sendChatRequest = async (message: string) => {
+    console.log("inside sendChatRequest");
     const response = await axios.post("/chat/new", {message});
     if(response.status !== 200) {
         throw new Error("Unable to Send Chat");
@@ -39,4 +40,21 @@ export const fetchChatHistory = async () => {
         throw new Error('Failed to fetch chat history');
     }
     return response.data.chats; // Assuming backend sends an array of chats
+};
+
+export const deleteUserChats = async () => {
+    const response = await axios.delete('/chat/delete');
+    if (response.status !== 200) {
+        throw new Error('Failed to delete user chats');
+    }
+    return response.data; // Assuming backend sends a success message
+};
+
+
+export const userLogout = async () => {
+    const response = await axios.get('/user/logout');
+    if (response.status !== 200) {
+        throw new Error('Failed to logout user');
+    }
+    return response.data; // Assuming backend sends a success message
 };

@@ -3,12 +3,14 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { red } from '@mui/material/colors';
 import { UserAuth } from '../contex/AuthContext'; // Ensure correct spelling of 'context'
 import ChatMessage from '../components/shared/ChatMessage';
-import { sendChatRequest, fetchChatHistory } from '../helpers/api-communication';
-import { useEffect, useState } from 'react';
-
+import { sendChatRequest, fetchChatHistory, deleteUserChats } from '../helpers/api-communication';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import {Navigate, useNavigate} from "react-router-dom"
 type Message = { role: string; content: string; timestamp: string };
 const Chat = () => {
   const auth = UserAuth();
+  const navigate = useNavigate();
   const userAvatar = `${auth?.user?.name[0]}${auth?.user?.name.split(' ')[1]?.[0] || ''}`;
 
   // Fetch previous chat history on component mount
@@ -48,9 +50,23 @@ const Chat = () => {
     }
   };
 
+  const handleDeleteChat = async () => {
+    try {
+      toast.loading("Deleting Chat...", { id: "deleteChat" });
+      await deleteUserChats();
+      setChatMessage([]);
+      toast.success("Chat Deleted Successfully", { id: "deleteChat" });
+    } catch (error) {
+      console.error('Failed to delete chat:', error);
+    }
+  }
 
-
-
+  useEffect(() => {
+    if (!auth?.user) {
+      navigate('/login');
+    }
+  }, [auth]);
+  
   return (
     <Box
       sx={{
@@ -97,7 +113,8 @@ const Chat = () => {
           <Typography sx={{ mx: 'auto', fontFamily: 'Work Sans', my: 4, p: 1, textAlign: 'center' }}>
             Feel free to ask questions but avoid sharing personal information.
           </Typography>
-          <Button
+          <Button 
+            onClick={handleDeleteChat}
             variant="contained"
             sx={{
               width: '80%',

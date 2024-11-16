@@ -2,6 +2,7 @@ import { AppBar, Toolbar } from '@mui/material'
 import Logo from './shared/Logo'
 import { UserAuth } from '../contex/AuthContext';
 import NavigationLink from './shared/NavigationLink';
+import { loginUser, userLogout } from '../helpers/api-communication';
 
 function Header() {
   const auth = UserAuth();
@@ -19,11 +20,14 @@ function Header() {
                 textcolor='black'
               />
               <NavigationLink
+                onClick={() => {
+                  return userLogout();
+                }}
                 bg='#52538f'
-                to='/'
+                to='/login'
                 text='logout'
                 textcolor='white'
-                onClick={() => auth?.logout()}
+               
               />
             </> 
           ) : (

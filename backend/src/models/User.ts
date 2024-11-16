@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 6, // Password must be at least 6 characters long
     },
-    chats: [chatSchema], // Embedded Chat Schema with unique ID
+    chats: { type: [chatSchema], default: [] } // Embedded Chat Schema with unique ID
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields automatically

@@ -55,3 +55,20 @@ export const getChatHistory = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Failed to fetch chat history' });
     }
 };
+
+export const deleteChat = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findById(res.locals.jwtData.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        //ts-ignore
+        user.chats = [] as any;
+        await user.save();
+
+        res.status(200).json({ message: "Chat deleted successfully" });
+    } catch (error) {
+        console.error('Error deleting chat history:', error);
+        res.status(500).json({ error: 'Failed to delete chat history' });
+    }
+};
